@@ -1,11 +1,12 @@
 #-*-coding:cp936-*-
-#----------------------------------------
+#----------------------------------------------
 #程序名：根据CPU占用率对风扇进行调速
 #作 者：吴晓疆
 #日 期：2015/6/6
-#----------------------------------------
+#----------------------------------------------
 import serial,time,socket,psutil,os,sys
 from ctypes import *
+#----------------------------------------------
 def message_box(title,text):
     user32 = windll.LoadLibrary("user32.dll")
     user32.MessageBoxA(0,text,title,0)
@@ -20,6 +21,7 @@ def usart_init(baudrate,port):
         message_box('串口错误','串口初始化错误，请检查串口连接情况！')
         sys.exit(0)
     return ser
+#--------------------------------------------------------------------
 def set_log():
     date = time.strftime('%Y-%m-%d',time.localtime())
     name = '%s.txt'%date
@@ -37,6 +39,7 @@ def insert_data(fil,data):
 def load_data(data):
     fil = set_log()
     insert_data(fil,data)
+#----------------------------------------------------------------------
 def get_temp():
     temp = psutil.cpu_percent(1)
     return temp
@@ -45,6 +48,7 @@ def send_level(ser,old_level,temp):
     ser.write(chr(level))
     if old_level != level:
         return level
+#----------------------------------------------------------------------
 class cpu_tool():
     def __init__(self):
         self.level = 1
